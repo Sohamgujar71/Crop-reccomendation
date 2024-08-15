@@ -1,52 +1,82 @@
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState } from 'react';
+import axios from 'axios';
+import './Form.css'; // Assuming you have some CSS for styling
 
 const Form = () => {
+  const [formData, setFormData] = useState({
+    Nitrogen: '',
+    Phosporus: '',
+    Potassium: '',
+    Temperature: '',
+    Humidity: '',
+    pH: '',
+    Rainfall: '',
+  });
+
+  const [result, setResult] = useState('');
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/predict', formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      if (response.data.error) {
+        setResult(`Error: ${response.data.error}`);
+      } else {
+        setResult(response.data.result);
+      }
+    } catch (error) {
+      setResult(`Failed to fetch: ${error.message}`);
+    }
+  };
+
   return (
-    <form action="/predict" method="POST">
-      <div className="row">
-        <div className="col-md-4">
+    <div className="container">
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
           <label htmlFor="Nitrogen">Nitrogen</label>
-          <input type="number" id="Nitrogen" name="Nitrogen" placeholder="Enter Nitrogen" className="form-control" required step="0" />
+          <input type="text" name="Nitrogen" value={formData.Nitrogen} onChange={handleChange} required />
         </div>
-        <div className="col-md-4">
-          <label htmlFor="Phosphorus">Phosphorus</label>
-          <input type="number" id="Phosphorus" name="Phosphorus" placeholder="Enter Phosphorus" className="form-control" required step="0" />
+        <div className="form-group">
+          <label htmlFor="Phosporus">Phosporus</label>
+          <input type="text" name="Phosporus" value={formData.Phosporus} onChange={handleChange} required />
         </div>
-        <div className="col-md-4">
+        <div className="form-group">
           <label htmlFor="Potassium">Potassium</label>
-          <input type="number" id="Potassium" name="Potassium" placeholder="Enter Potassium" className="form-control" required step="0" />
+          <input type="text" name="Potassium" value={formData.Potassium} onChange={handleChange} required />
         </div>
-      </div>
-
-      <div className="row mt-4">
-        <div className="col-md-4">
+        <div className="form-group">
           <label htmlFor="Temperature">Temperature</label>
-          <input type="number" step="0.01" id="Temperature" name="Temperature" placeholder="Enter Temperature in °C" className="form-control" required />
+          <input type="text" name="Temperature" value={formData.Temperature} onChange={handleChange} required />
         </div>
-        <div className="col-md-4">
+        <div className="form-group">
           <label htmlFor="Humidity">Humidity</label>
-          <input type="number" step="0.01" id="Humidity" name="Humidity" placeholder="Enter Humidity in %" className="form-control" required />
+          <input type="text" name="Humidity" value={formData.Humidity} onChange={handleChange} required />
         </div>
-        <div className="col-md-4">
+        <div className="form-group">
           <label htmlFor="pH">pH</label>
-          <input type="number" step="0.01" id="pH" name="pH" placeholder="Enter pH value" className="form-control" required />
+          <input type="text" name="pH" value={formData.pH} onChange={handleChange} required />
         </div>
-      </div>
-
-      <div className="row mt-4">
-        <div className="col-md-4">
+        <div className="form-group">
           <label htmlFor="Rainfall">Rainfall</label>
-          <input type="number" step="0.01" id="Rainfall" name="Rainfall" placeholder="Enter Rainfall in mm" className="form-control" required />
+          <input type="text" name="Rainfall" value={formData.Rainfall} onChange={handleChange} required />
         </div>
-      </div>
-
-      <div className="row mt-4">
-        <div className="col-md-12 text-center">
-          <button type="submit" className="btn btn-primary btn-lg">Get Recommendation</button>
-        </div>
-      </div>
-    </form>
+        <button type="submit">Submit</button>
+      </form>
+      {result && <div className="result">{result}</div>}
+    </div>
   );
 };
 
