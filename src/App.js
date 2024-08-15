@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Navbar from './components/Navbar';
+import Form from './components/Form';
+import Card from './components/Card';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './style.css';
+import backgroundImage from './assets/background.jpg'; // Import the image
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}>
+      <Navbar />
+      <div className="container my-3 mt-3">
+        <h1 className="text-success">Know what can be cultivated<span role="img" aria-label="seedling">🌱</span></h1>
+        <Form />
+        <Card />
+      </div>
     </div>
   );
-}
+};
 
 export default App;

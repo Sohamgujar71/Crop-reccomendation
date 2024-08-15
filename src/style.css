@@ -1,0 +1,33 @@
+
+h1 {
+    color: rgb(0, 0, 0);
+    text-align: center;
+}
+
+.warning {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+}
+
+.card{
+margin-left:410px;
+margin-top: 20px;
+display: flex;
+flex-direction: row;
+align-items: center;
+color: rgb(241, 239, 240);
+}
+
+.card-text:last-child {
+    margin-bottom: 0;
+    color: aliceblue;
+}
+
+
+.container{
+background:#fffbfe;
+font-weight: bold;
+padding-bottom:10px;
+border-radius: 15px;
+}
